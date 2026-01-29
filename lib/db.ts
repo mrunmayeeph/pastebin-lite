@@ -49,49 +49,39 @@ export async function createPaste(
 }
 
 /**
- * Get a paste by ID and increment view count
+ * Atomically fetch a paste and increment view count
+ * Returns null if:
+ * - paste does not exist
+ * - expired by TTL
+ * - view limit exceeded
  */
 export async function getPasteAndIncrementViews(
   id: string,
   currentTimeMs: number
 ): Promise<Paste | null> {
-  // First, get the paste
   const result = await sql<Paste>`
-    SELECT id, content, created_at, ttl_seconds, max_views, view_count
-    FROM pastes
+    UPDATE pastes
+    SET view_count = view_count + 1
     WHERE id = ${id}
+      AND (
+        ttl_seconds IS NULL
+        OR ${currentTimeMs} < created_at + (ttl_seconds * 1000)
+      )
+      AND (
+        max_views IS NULL
+        OR view_count < max_views
+      )
+    RETURNING id, content, created_at, ttl_seconds, max_views, view_count
   `;
 
+  // If no rows updated → unavailable
   if (result.rows.length === 0) {
     return null;
   }
 
-  const paste = result.rows[0];
-
-  // Check if expired by TTL
-  if (paste.ttl_seconds !== null) {
-    const expiresAt = paste.created_at + paste.ttl_seconds * 1000;
-    if (currentTimeMs >= expiresAt) {
-      return null;
-    }
-  }
-
-  // Check if view limit reached
-  if (paste.max_views !== null && paste.view_count >= paste.max_views) {
-    return null;
-  }
-
-  // Increment view count
-  await sql`
-    UPDATE pastes
-    SET view_count = view_count + 1
-    WHERE id = ${id}
-  `;
-
-  // Return the paste with incremented view count
-  paste.view_count += 1;
-  return paste;
+  return result.rows[0];
 }
+
 
 /**
  * Get a paste by ID without incrementing view count (for HTML view)
