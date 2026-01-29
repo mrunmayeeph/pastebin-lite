@@ -3,6 +3,11 @@
 **Pastebin Lite** is a lightweight web application for creating and sharing text snippets with optional expiration controls. It provides a simple API and web interface for quickly storing text content and generating shareable links with configurable time-to-live (TTL) and view limits.
 
 ---
+## 🔗 Live Demo
+
+**Production URL:**  
+👉 https://pastebin-lite-mrunmayee.vercel.app
+---
 
 ## Features
 
@@ -724,3 +729,4 @@ For questions or issues:
 ---
 
 **Built with ❤️ using Next.js, TypeScript, and Vercel Postgres**
+
