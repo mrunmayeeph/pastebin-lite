@@ -47,64 +47,142 @@ export default async function PastePage({ params }: PageProps) {
             box-sizing: border-box;
           }
           body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Roboto, sans-serif;
+            background: #121212;
+            padding: 24px;
             line-height: 1.6;
+            min-height: 100vh;
           }
           .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
           }
           .header {
-            background: #2563eb;
-            color: white;
-            padding: 20px 24px;
+            margin-bottom: 24px;
           }
           .header h1 {
-            font-size: 24px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+          }
+          .header p {
+            color: #9ca3af;
+            font-size: 14px;
+          }
+          .paste-card {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+          }
+          .paste-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .paste-id {
+            font-size: 14px;
+            color: #9ca3af;
+            font-family: 'Courier New', monospace;
+          }
+          .paste-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 600;
           }
-          .content {
+          .paste-content {
             padding: 24px;
           }
-          .paste-content {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 16px;
+          .content-box {
+            background: #121212;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 20px;
+            color: #e5e7eb;
             white-space: pre-wrap;
             word-wrap: break-word;
-            font-family: 'Courier New', monospace;
+            font-family: 'Courier New', 'Monaco', monospace;
             font-size: 14px;
-            line-height: 1.5;
-            min-height: 100px;
+            line-height: 1.6;
+            min-height: 120px;
             max-height: 600px;
             overflow-y: auto;
           }
+          .content-box::-webkit-scrollbar {
+            width: 8px;
+          }
+          .content-box::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            border-radius: 4px;
+          }
+          .content-box::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 4px;
+          }
+          .content-box::-webkit-scrollbar-thumb:hover {
+            background: #5a5a5a;
+          }
           .footer {
             padding: 16px 24px;
-            border-top: 1px solid #e5e7eb;
-            background: #f9fafb;
+            border-top: 1px solid #2a2a2a;
+            text-align: center;
+          }
+          .footer a {
+            color: #8b5cf6;
+            text-decoration: none;
             font-size: 14px;
-            color: #6b7280;
+            font-weight: 500;
+            transition: color 0.2s;
+          }
+          .footer a:hover {
+            color: #a78bfa;
+          }
+          @media (max-width: 640px) {
+            body {
+              padding: 16px;
+            }
+            .header h1 {
+              font-size: 24px;
+            }
+            .paste-content {
+              padding: 16px;
+            }
+            .content-box {
+              padding: 16px;
+              font-size: 13px;
+            }
           }
         `}</style>
       </head>
       <body>
         <div className="container">
           <div className="header">
-            <h1>Paste</h1>
+            <h1>Pastebin Lite</h1>
+            <p>Viewing paste</p>
           </div>
-          <div className="content">
-            <div className="paste-content">{paste.content}</div>
-          </div>
-          <div className="footer">
-            Paste ID: {id}
+          
+          <div className="paste-card">
+            <div className="paste-header">
+              <span className="paste-id">ID: {id}</span>
+              <span className="paste-badge">Active</span>
+            </div>
+            
+            <div className="paste-content">
+              <div className="content-box">{paste.content}</div>
+            </div>
+            
+            <div className="footer">
+              <a href="/">Create your own paste →</a>
+            </div>
           </div>
         </div>
       </body>

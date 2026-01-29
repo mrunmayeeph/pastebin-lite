@@ -1,3 +1,5 @@
+import './globals.css'
+
 export const metadata = {
   title: 'Pastebin Lite',
   description: 'A simple pastebin application for sharing text',
